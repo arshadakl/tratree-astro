@@ -2,6 +2,7 @@
 import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 import '../styles/parallax.css';
+import '../styles/tratree.css';
 
 interface Props {
   title?: string;
@@ -41,6 +42,7 @@ const {
     <link rel="manifest" href="/favicon/site.webmanifest" />
 
     <link rel="preload" href="/fonts/NeueMontreal-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/css/loconative-scroll.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -81,7 +83,6 @@ const {
           <div class="styling-element left-bottom"></div>
           <div class="styling-element right-bottom"></div>
         </div>
-        <h5 class="cursor-text">Click anywhere to enter</h5>
       </div>
     </div>
 

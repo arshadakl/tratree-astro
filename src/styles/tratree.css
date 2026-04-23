@@ -1,0 +1,486 @@
+/* ============================================================
+   TRATREE — Custom Section Styles
+   Design system: CSS vars only, no hardcoded colours or sizes.
+   Spacing via --title-size, --row-gap, --col-gap.
+   Colour via --color-dark, --color-light, --color-border, etc.
+   ============================================================ */
+
+
+/* ================================================================
+   SECTION — WONDERS GRID
+   Base: section-parallax-intro (padding, rhythm).
+   Override: 4-col card grid, no parallax on images.
+
+   Root issue fixed: section-parallax-intro figure picture in
+   style.css sets height:115% / top:-15% for parallax room.
+   These new sections have NO parallax, so we reset to 100%/0.
+   ================================================================ */
+
+/* Override section-parallax-intro figure picture (height:115%; top:-15%).
+   Keep the same oversize pattern — figure's overflow:hidden clips movement.
+   data-scroll data-scroll-speed="-0.5" on picture drives the subtle shift. */
+.wonder-card figure picture {
+    height: 115%;
+    top: -10%;
+}
+
+/* Hover zoom stacks on top of the scroll transform */
+.wonder-card:hover figure picture {
+    transform: scale(1.04);
+}
+
+/* Disable parallax on touch/mobile — scroll speed causes image gaps */
+@media (hover: none), screen and (max-width: 768px) {
+    .wonder-card figure picture {
+        height: 100%;
+        top: 0;
+    }
+}
+
+/* Wonders section header row */
+.section-wonders .wonders-top {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: calc(var(--row-gap) * 2);
+    gap: var(--col-gap);
+}
+
+.section-wonders .wonders-top h2 {
+    max-width: calc(var(--title-size) * 4);
+}
+
+/* Right side of wonders-top header */
+.section-wonders .wonders-top-right {
+    display: flex;
+    align-items: center;
+    gap: var(--col-gap);
+}
+
+.section-wonders .wonders-top-right p {
+    max-width: 22em;
+    text-align: right;
+    opacity: 0.45;
+    font-size: 0.9em;
+    line-height: 1.65;
+}
+
+/* Arrow button */
+.section-wonders .wonders-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5em;
+    height: 2.5em;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: background-color var(--animation-primary), border-color var(--animation-primary);
+}
+
+.section-wonders .wonders-arrow:hover {
+    background-color: var(--color-light);
+    border-color: var(--color-light);
+}
+
+.section-wonders .wonders-arrow svg {
+    width: 45%;
+}
+
+.section-wonders .wonders-arrow svg * {
+    stroke: var(--color-light);
+    stroke-width: 1.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke var(--animation-primary);
+}
+
+.section-wonders .wonders-arrow:hover svg * {
+    stroke: var(--color-dark);
+}
+
+/* 4-col grid — overrides section-parallax-intro's 2-col default */
+.section-wonders .row.grid.wonders-grid {
+    --columns: 4;
+    --gap: var(--col-gap);
+    align-items: stretch;
+}
+
+/* Card container */
+.wonder-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: calc(var(--border-radius) * 0.4);
+}
+
+/* Aspect-ratio figure — padding-top creates the height */
+.wonder-card figure {
+    width: 100%;
+    padding-top: 130%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* img fills the figure via .overlay — object-fit ensures coverage */
+.wonder-card figure img {
+    object-fit: cover;
+}
+
+/* Bottom gradient fade */
+.wonder-card .card-fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    background: linear-gradient(
+        to top,
+        rgba(var(--color-dark-rgb), 0.92) 0%,
+        rgba(var(--color-dark-rgb), 0.55) 40%,
+        rgba(var(--color-dark-rgb), 0.15) 70%,
+        transparent 100%
+    );
+    pointer-events: none;
+}
+
+/* Card text info */
+.wonder-card .card-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: calc(var(--row-gap) * 1.2);
+}
+
+.wonder-card .card-tag {
+    display: inline-block;
+    font-size: 0.6em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--color-dark);
+    background: var(--color-light);
+    padding: 0.25em 0.7em;
+    border-radius: 2em;
+    margin-bottom: 0.6em;
+    font-weight: 500;
+}
+
+.wonder-card .card-info h4 {
+    font-size: 0.85em;
+    color: var(--color-light);
+    margin-bottom: 0.3em;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.wonder-card .card-info p {
+    font-size: 0.7em;
+    opacity: 0.55;
+    line-height: 1.5;
+}
+
+/* ── Responsive ─── */
+@media screen and (max-width: 1024px) {
+    .section-wonders .row.grid.wonders-grid {
+        --columns: 2;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .section-wonders .row.grid.wonders-grid {
+        --columns: 1;
+    }
+
+    .section-wonders .wonders-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .section-wonders .wonders-top-right p {
+        text-align: left;
+    }
+}
+
+
+/* ================================================================
+   SECTION — EXPERIENCE (Why Travel With Tratree)
+   Base: section-parallax-intro.
+   Layout: 3-col bordered feature grid, no images.
+   ================================================================ */
+
+.section-experience .experience-header {
+    text-align: center;
+    margin-bottom: calc(var(--title-size) * 0.8);
+}
+
+.section-experience .experience-header h5 {
+    opacity: 0.5;
+    margin-bottom: 0.8em;
+}
+
+/* 3-col bordered grid */
+.section-experience .row.grid.exp-grid {
+    --columns: 3;
+    --gap: 1px;
+    border: 1px solid var(--color-border);
+    border-radius: calc(var(--border-radius) * 0.4);
+    overflow: hidden;
+    align-items: stretch;
+}
+
+.exp-card {
+    padding: calc(var(--row-gap) * 2.5) calc(var(--col-gap) * 1.5);
+    background-color: rgba(var(--color-light-rgb), 0.02);
+    border-right: 1px solid var(--color-border);
+    position: relative;
+    justify-content: flex-start;
+    transition: background-color var(--animation-smooth);
+}
+
+.exp-card:last-child {
+    border-right: none;
+}
+
+.exp-card:hover {
+    background-color: rgba(var(--color-light-rgb), 0.05);
+}
+
+/* Icon circle */
+.exp-icon {
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: calc(var(--row-gap) * 1.8);
+    transition: border-color var(--animation-primary), background-color var(--animation-primary);
+}
+
+.exp-card:hover .exp-icon {
+    border-color: var(--color-light);
+    background-color: rgba(var(--color-light-rgb), 0.08);
+}
+
+.exp-icon svg {
+    width: 45%;
+    height: auto;
+    fill: none;
+    stroke: var(--color-light);
+    stroke-width: 1.25;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Accent line — slides in on hover */
+.exp-accent {
+    display: block;
+    width: 2.5em;
+    height: 1px;
+    background: var(--color-light);
+    margin-bottom: calc(var(--row-gap) * 1.4);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--animation-smooth);
+}
+
+.exp-card:hover .exp-accent {
+    transform: scaleX(1);
+}
+
+.exp-card h3 {
+    font-size: calc(var(--title-size) * 0.22);
+    margin-bottom: 0.75em;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.exp-card p {
+    font-size: 0.85em;
+    opacity: 0.5;
+    line-height: 1.75;
+}
+
+/* ── Responsive ─── */
+@media screen and (max-width: 840px) {
+    .section-experience .row.grid.exp-grid {
+        --columns: 1;
+    }
+
+    .exp-card {
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .exp-card:last-child {
+        border-bottom: none;
+    }
+}
+
+
+/* ================================================================
+   SECTION — VACATION SPLIT
+   Base: section-parallax-intro.
+   Layout: image mosaic left, text content right. No parallax.
+
+   Root issue fixed: reset section-parallax-intro figure picture
+   height/top so images aren't shifted out of their containers.
+   ================================================================ */
+
+/* Override section-parallax-intro figure picture (height:115%; top:-15%).
+   Gentle oversize — figure's overflow:hidden clips the movement range.
+   data-scroll data-scroll-speed="-0.5" on picture drives the subtle shift. */
+.vacation-img figure picture {
+    height: 115%;
+    top: -10%;
+}
+
+/* Disable parallax on touch/mobile — scroll speed causes image gaps */
+@media (hover: none), screen and (max-width: 768px) {
+    .vacation-img figure picture {
+        height: 100%;
+        top: 0;
+    }
+}
+
+/* Hover zoom stacks on top of the scroll transform */
+.vacation-img:hover figure img {
+    transform: scale(1.04);
+}
+
+/* 2-col grid */
+.section-vacation .row.grid.vacation-grid {
+    --columns: 2;
+    --gap: 8vw;
+    align-items: center;
+}
+
+/* Image mosaic — inner CSS grid (not the row/col system) */
+.vacation-mosaic {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: calc(var(--col-gap) * 0.6);
+}
+
+.vacation-img {
+    overflow: hidden;
+    border-radius: calc(var(--border-radius) * 0.35);
+}
+
+/* Tall image spans both rows in the 2-col mosaic grid */
+.vacation-img.tall {
+    grid-row: span 2;
+}
+
+/* Aspect-ratio figures — padding-top creates height */
+.vacation-img.tall figure {
+    width: 100%;
+    padding-top: 145%;
+    overflow: hidden;
+    position: relative;
+}
+
+.vacation-img.short figure {
+    width: 100%;
+    padding-top: 90%;
+    overflow: hidden;
+    position: relative;
+}
+
+.vacation-img figure img {
+    object-fit: cover;
+    transition: transform var(--animation-smooth);
+}
+
+/* Text column */
+.vacation-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--row-gap);
+}
+
+.vacation-text h5 {
+    opacity: 0.45;
+}
+
+.vacation-text h2 {
+    line-height: 1.1;
+}
+
+/* Italic using the site's Fraunces font */
+.vacation-text h2 em {
+    font-family: 'Fraunces', sans-serif;
+    font-style: italic;
+    font-size: 0.95em;
+    text-transform: none;
+}
+
+.vacation-divider {
+    width: 3em;
+    height: 1px;
+    background: var(--color-light);
+    opacity: 0.4;
+}
+
+.vacation-text p {
+    opacity: 0.5;
+    font-size: 0.9em;
+    line-height: 1.8;
+    max-width: 36em;
+}
+
+/* CTA — mirrors the site's .btn.secondary pattern */
+.vacation-text .t-btn {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--btn-height);
+    padding: 0 2em;
+    background-color: var(--color-light);
+    border-radius: var(--border-radius);
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-dark);
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: opacity var(--animation-primary), transform var(--animation-primary);
+}
+
+.vacation-text .t-btn:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+/* ── Responsive ─── */
+@media screen and (max-width: 840px) {
+    .section-vacation .row.grid.vacation-grid {
+        --columns: 1;
+        --gap: var(--col-gap);
+        /* Stack mosaic below text on small screens */
+        gap: calc(var(--row-gap) * 3) var(--col-gap);
+    }
+}
+
+@media screen and (max-width: 540px) {
+    /* Collapse inner mosaic to single column on mobile */
+    .vacation-mosaic {
+        grid-template-columns: 1fr;
+    }
+
+    .vacation-img.tall {
+        grid-row: span 1;
+    }
+
+    /* Equalize all figure heights on single column */
+    .vacation-img.tall figure,
+    .vacation-img.short figure {
+        padding-top: 65%;
+    }
+}
