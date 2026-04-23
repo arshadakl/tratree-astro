@@ -15,12 +15,19 @@ interface Props {
 const { destinations } = Astro.props;
 ---
 
+<!-- Outer wrapper: no data-bg-section intentionally — transparent zone lets
+     hero's overflowing gradient visuals (height:120%) bleed in from above -->
 <section
-  class="section section-parallax-intro section-wonders"
+  class="section-parallax-intro"
+  style="margin-bottom: 0; padding-bottom: 0;"
   data-theme-section="dark"
-  data-bg-section="dark"
-  data-scroll-section
 >
+  <div
+    class="section section-parallax-intro section-wonders"
+    data-theme-section="dark"
+    data-bg-section="dark"
+    data-scroll-section
+  >
     <div class="container">
 
       <div class="wonders-top">
@@ -63,4 +70,5 @@ const { destinations } = Astro.props;
       </div>
 
     </div>
+  </div>
 </section>
