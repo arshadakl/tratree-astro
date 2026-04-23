@@ -73,6 +73,7 @@ html { scrollbar-width: none; }
 /* ── Base ───────────────────────────────────────────────────── */
 
 *, *::after, *::before { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
 li, ul, figure { padding: 0; margin: 0; list-style: none; }
 html { scroll-behavior: initial; }
 
