@@ -1,0 +1,98 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import '../styles/global.css';
+import '../styles/parallax.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Tratree — Discover the World',
+  description = 'Tratree is your trusted travel partner. Explore curated destinations, handpicked stays, and seamless journeys — from mountain escapes to coastal getaways.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content="travel, tours, vacation, destinations, tratree, holiday, adventure, explore" />
+    <meta name="author" content="Tratree" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/images/meta-image.jpg" />
+    <meta property="og:site_name" content="Tratree" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:type" content="website" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content="/images/meta-image.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#101208" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png" />
+    <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+
+    <link rel="preload" href="/fonts/NeueMontreal-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- GSAP SplitText premium plugin — loaded as browser global before any scripts -->
+    <script is:inline src="/js/SplitText.min.js"></script>
+
+    <ViewTransitions />
+  </head>
+  <body
+    data-navigation-status="not-active"
+    data-scrolling-started="false"
+    data-scrolling-direction="down"
+    data-theme-page="dark"
+    data-theme-nav="dark"
+    data-bg-nav="dark"
+    data-audio-ambient-status="not-started"
+    data-theme-page-light="235, 255, 109"
+    data-theme-page-dark="16, 18, 8"
+    style="--color-dark-rgb: 16, 18, 8; --color-dark: rgba(var(--color-dark-rgb), 1); --color-light-rgb: 235, 255, 109; --color-light: rgba(var(--color-light-rgb), 1);"
+  >
+    <!-- Page transition overlay -->
+    <div class="loading-container">
+      <div class="loading-screen"></div>
+    </div>
+
+    <!-- Custom cursor -->
+    <div class="custom-cursor" data-cursor-init="false">
+      <div class="cursor-bubble" data-cursor-bubble="not-active">
+        <div class="cursor-styling">
+          <div class="styling-element left-top"></div>
+          <div class="styling-element right-top"></div>
+          <div class="styling-element left-bottom"></div>
+          <div class="styling-element right-bottom"></div>
+        </div>
+        <h5 class="cursor-text">Click anywhere to enter</h5>
+      </div>
+    </div>
+
+    <!-- Floating elements: audio + SVG ring -->
+    <div class="floating-elements">
+      <audio id="audio-flick" src="/audio/flick-2.mp3" preload="none"></audio>
+      <audio id="audio-ambient" src="/audio/ambient-wave.mp3" preload="none"></audio>
+      <audio id="audio-whoosh" src="/audio/whoosh-short.mp3" preload="none"></audio>
+      <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="25" cy="25" r="19.5" stroke="black" />
+      </svg>
+    </div>
+
+    <slot />
+  </body>
+</html>
