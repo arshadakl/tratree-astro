@@ -1,17 +1,137 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroParallax from '../components/HeroParallax.astro';
+import WondersGrid from '../components/WondersGrid.astro';
+import ExperienceSection from '../components/ExperienceSection.astro';
+import VacationSplit from '../components/VacationSplit.astro';
 
+const destinations = [
+  {
+    title: 'Camel Hill',
+    tag: 'Mountains',
+    description: 'Majestic peaks rising above the clouds',
+    imageSrc: 'https://images.pexels.com/photos/1770809/pexels-photo-1770809.jpeg?auto=compress&cs=tinysrgb&w=700',
+    imageThumb: 'https://images.pexels.com/photos/1770809/pexels-photo-1770809.jpeg?auto=compress&cs=tinysrgb&w=80',
+    imageAlt: 'Camel Hill',
+  },
+  {
+    title: 'Havana Street',
+    tag: 'Forests',
+    description: 'Ancient paths through timeless woodland',
+    imageSrc: 'https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg?auto=compress&cs=tinysrgb&w=700',
+    imageThumb: 'https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg?auto=compress&cs=tinysrgb&w=80',
+    imageAlt: 'Forest Path',
+  },
+  {
+    title: 'Khung Savanna',
+    tag: 'Wildlife',
+    description: 'Breathtaking encounters with wild nature',
+    imageSrc: 'https://images.pexels.com/photos/247431/pexels-photo-247431.jpeg?auto=compress&cs=tinysrgb&w=700',
+    imageThumb: 'https://images.pexels.com/photos/247431/pexels-photo-247431.jpeg?auto=compress&cs=tinysrgb&w=80',
+    imageAlt: 'Wildlife',
+  },
+  {
+    title: 'Red Mountain',
+    tag: 'Canyons',
+    description: 'Dramatic red rock formations at sunset',
+    imageSrc: 'https://images.pexels.com/photos/2693529/pexels-photo-2693529.jpeg?auto=compress&cs=tinysrgb&w=700',
+    imageThumb: 'https://images.pexels.com/photos/2693529/pexels-photo-2693529.jpeg?auto=compress&cs=tinysrgb&w=80',
+    imageAlt: 'Red Mountain',
+  },
+];
+
+const features = [
+  {
+    title: 'Tried & Trusted',
+    description: 'Thousands of happy travellers trust us for safe, smooth, and memorable journeys. Your satisfaction is our priority always.',
+    iconSvg: `<svg style="width:45%;height:auto;" viewBox="0 0 24 24" fill="none" stroke="var(--color-light)" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L3 6v6c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V6L12 2z"/><polyline points="9 12 11 14 15 10"/></svg>`,
+  },
+  {
+    title: 'Reliable Support',
+    description: 'We are always here for you. Reach out anytime via phone, WhatsApp, or chat before, during, and after your trip.',
+    iconSvg: `<svg style="width:45%;height:auto;" viewBox="0 0 24 24" fill="none" stroke="var(--color-light)" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>`,
+  },
+  {
+    title: 'One-Stop Travel Partner',
+    description: 'From planning to booking, stays to transport, everything handled in one place for a completely hassle-free experience.',
+    iconSvg: `<svg style="width:45%;height:auto;" viewBox="0 0 24 24" fill="none" stroke="var(--color-light)" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>`,
+  },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <main
+    class="parallax-single-nature"
+    id="main"
+    data-theme-page-light="235, 255, 109"
+    data-theme-page-dark="16, 18, 8"
+    data-scroll-container
+  >
+    <div class="main-wrap" id="main-wrap" data-scroll-container>
+      <HeroParallax />
+      <WondersGrid destinations={destinations} />
+      <ExperienceSection features={features} />
+      <VacationSplit />
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  import LazyLoad from 'vanilla-lazyload';
+  import { initSmoothScroll, initLenis, destroyScroll } from '../scripts/scroll';
+  import { initCustomCursor } from '../scripts/cursor';
+  import {
+    initLoader,
+    initSplitText,
+    initMagneticButtons,
+    initTratreeSectionFades,
+    initMarqueeScroll,
+    pageTransitionOut,
+    pageTransitionIn,
+  } from '../scripts/animations';
+  import { initInterfaceSounds } from '../scripts/sounds';
+
+  function initCheckWindowHeight(): void {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+
+  function initLazyLoad(): void {
+    const container = document.querySelector<HTMLElement>('[data-scroll-container]');
+    if (!container) return;
+    new LazyLoad({ container, elements_selector: '.lazy' });
+  }
+
+  function initScript(): void {
+    initCheckWindowHeight();
+    initLenis();
+    initLazyLoad();
+    initSplitText();
+    initMagneticButtons();
+    initCustomCursor();
+    initInterfaceSounds();
+    initTratreeSectionFades();
+    initMarqueeScroll();
+  }
+
+  // ── First page load ──────────────────────────────────────────
+  const mainEl = document.querySelector<HTMLElement>('main');
+  if (mainEl) {
+    initSmoothScroll(mainEl);
+    initScript();
+    initLoader();
+  }
+
+  // ── ViewTransitions lifecycle ────────────────────────────────
+  document.addEventListener('astro:before-swap', () => {
+    pageTransitionIn();
+  });
+
+  document.addEventListener('astro:after-swap', () => {
+    destroyScroll();
+    const newMain = document.querySelector<HTMLElement>('main');
+    if (newMain) initSmoothScroll(newMain);
+    initScript();
+    pageTransitionOut();
+  });
+</script>
