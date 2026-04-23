@@ -6,7 +6,7 @@ export function initInterfaceSounds(): void {
   document.querySelectorAll<HTMLElement>('[data-sound-toggle]').forEach((el) => {
     el.addEventListener('click', () => {
       if (!ambient) return;
-      if (document.body.dataset.audioAmbientStatus === 'not-active') {
+      if (['not-active', 'not-started'].includes(document.body.dataset.audioAmbientStatus ?? '')) {
         document.body.dataset.audioAmbientStatus = 'active';
         ambient.currentTime = 0;
         ambient.volume = 0.5;
@@ -46,13 +46,4 @@ export function initInterfaceSounds(): void {
       }
     });
   });
-}
-
-export function audioWhoosh(): void {
-  const whoosh = document.querySelector<HTMLAudioElement>('#audio-whoosh');
-  if (whoosh && document.body.dataset.audioAmbientStatus !== 'not-active') {
-    whoosh.currentTime = 0;
-    whoosh.volume = 1;
-    whoosh.play();
-  }
 }

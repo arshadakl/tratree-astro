@@ -38,9 +38,7 @@ export function initCustomCursor(): void {
   document.querySelectorAll<HTMLElement>('[data-cursor-bubble-text]').forEach((el) => {
     el.addEventListener('mouseenter', () => {
       const bubble = document.querySelector<HTMLElement>('[data-cursor-bubble]');
-      const text   = document.querySelector<HTMLElement>('.cursor-text');
       if (bubble) bubble.dataset.cursorBubble = 'active';
-      if (text)   text.textContent = el.dataset.cursorBubbleText ?? '';
     });
     el.addEventListener('mouseleave', () => {
       const bubble = document.querySelector<HTMLElement>('[data-cursor-bubble]');

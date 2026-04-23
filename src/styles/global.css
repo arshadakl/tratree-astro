@@ -8,13 +8,7 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: 'Fraunces';
-  src: url('/fonts/Fraunces_144pt-Italic.ttf') format('truetype');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
+/* Fraunces loaded via Google Fonts in BaseLayout.astro */
 
 /* ── Lenis ──────────────────────────────────────────────────── */
 

@@ -9,8 +9,9 @@ declare const LoconativeScroll: any;
 
 export let scroll: any = null;
 let lenisInstance: InstanceType<typeof Lenis> | null = null;
+let lenisTicker: ((time: number) => void) | null = null;
 
-/** Initialise LoconativeScroll on the [data-scroll-container] inside `container`. */
+/** Initialise LoconativeScroll on the [data-scroll-container] element. */
 export function initSmoothScroll(container: HTMLElement): void {
   const el = container.querySelector<HTMLElement>('[data-scroll-container]');
   if (!el) return;
@@ -30,7 +31,15 @@ export function initSmoothScroll(container: HTMLElement): void {
 
 /** Initialise Lenis and connect it to the GSAP ticker for ScrollTrigger sync. */
 export function initLenis(): void {
-  if (lenisInstance) lenisInstance.destroy();
+  // Remove previous ticker before creating new instance to prevent accumulation
+  if (lenisTicker) {
+    gsap.ticker.remove(lenisTicker);
+    lenisTicker = null;
+  }
+  if (lenisInstance) {
+    lenisInstance.destroy();
+    lenisInstance = null;
+  }
 
   lenisInstance = new (Lenis as any)({
     duration: 1.4,
@@ -40,14 +49,22 @@ export function initLenis(): void {
 
   (lenisInstance as any).on('scroll', ScrollTrigger.update);
 
-  gsap.ticker.add((time: number) => {
+  lenisTicker = (time: number) => {
     (lenisInstance as any).raf(time * 1000);
-  });
-
+  };
+  gsap.ticker.add(lenisTicker);
   gsap.ticker.lagSmoothing(0);
 }
 
 export function destroyScroll(): void {
+  if (lenisTicker) {
+    gsap.ticker.remove(lenisTicker);
+    lenisTicker = null;
+  }
+  if (lenisInstance) {
+    lenisInstance.destroy();
+    lenisInstance = null;
+  }
   if (scroll) {
     scroll.destroy();
     scroll = null;
