@@ -1,0 +1,10 @@
+<svg width="257" height="256" viewBox="0 0 257 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <style>
+      @media (prefers-color-scheme: light) {
+         path {
+            fill: #AAA;
+         }
+      }
+   </style>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M128.25 0C128.25 70.6924 70.9424 128 0.25 128C70.9424 128 128.25 185.308 128.25 256C128.25 185.308 185.558 128 256.25 128C185.558 128 128.25 70.6924 128.25 0Z" fill="#AAA"/>
+</svg>
