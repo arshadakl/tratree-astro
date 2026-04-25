@@ -1,0 +1,338 @@
+---
+// Static — no props. Drop-in replacement for HeroParallax.
+// Preserves all 6 parallax layers; redesigns the hero content overlay.
+---
+
+<section
+  class="section default-header full-height section-parallax-header"
+  data-theme-section="dark"
+  data-bg-section="dark"
+  data-scroll-section
+>
+  <div class="overlay header-visuals">
+    <div class="header-visuals-inner overlay">
+
+      <!-- Background image -->
+      <figure class="overlay image-overlay">
+        <picture class="overlay">
+          <img
+            alt="Tratree hero background"
+            class="lazy overlay"
+            src="/images/nature-placeholder-thumb.jpg"
+            data-src="/images/nature-placeholder.jpg"
+          />
+        </picture>
+      </figure>
+
+      <!-- 6 parallax layers — no title here anymore -->
+      <div class="overlay parallax-layers">
+        <img alt="" class="overlay parallax-layer layer-6" src="/images/nature-6.png"
+          data-scroll data-scroll-speed="-9" data-scroll-position="top" data-scroll-target="#main" />
+        <img alt="" class="overlay parallax-layer layer-5" src="/images/nature-5.png"
+          data-scroll data-scroll-speed="-8" data-scroll-position="top" data-scroll-target="#main" />
+
+        <img alt="" class="overlay parallax-layer layer-4" src="/images/nature-4.png"
+          data-scroll data-scroll-speed="-5.5" data-scroll-position="top" data-scroll-target="#main" />
+        <img alt="" class="overlay parallax-layer layer-3" src="/images/nature-3.png"
+          data-scroll data-scroll-speed="-4" data-scroll-position="top" data-scroll-target="#main" />
+        <img alt="" class="overlay parallax-layer layer-2" src="/images/nature-2.png"
+          data-scroll data-scroll-speed="-2" data-scroll-position="top" data-scroll-target="#main" />
+        <img alt="" class="overlay parallax-layer layer-1" src="/images/nature-1.png"
+          data-scroll data-scroll-speed="-0.5" data-scroll-position="top" data-scroll-target="#main" />
+      </div>
+
+      <!-- Dark gradient fade at bottom -->
+      <div class="overlay-fade"></div>
+
+    </div>
+  </div>
+
+  <!-- Hero UI — direct child of section (position:relative), NOT inside 120% header-visuals.
+       This gives us exactly 100vh to work with for flex layout. -->
+  <div class="hero-ui" id="hero-ui">
+
+    <!-- Top-left: logo + brand -->
+    <div class="hero-nav hero-anim" style="--delay: 0.1s">
+      <img src="/images/logo/tratree.png" alt="Tratree logo" class="hero-logo" />
+      <span class="hero-brand">TRATREE</span>
+    </div>
+
+    <!-- Center-left: heading + subtitle -->
+    <div class="hero-content">
+      <h1 class="hero-heading">
+        <span class="hero-line" data-split-words>Find your path and</span>
+        <span class="hero-line" data-split-words data-line-index="1">explore beyond the usual.</span>
+      </h1>
+      <p class="hero-sub hero-anim" style="--delay: 0.72s">
+        Plan less. Experience more with Tratree.
+      </p>
+    </div>
+
+    <!-- Bottom-right: badge -->
+    <div class="hero-badge hero-anim" style="--delay: 0.9s">
+      <svg class="hero-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+      </svg>
+      <div class="hero-badge-text">
+        <span>Curated by Travelers</span>
+        <span>Loved by Explorers</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="container wide">
+    <div class="row"></div>
+  </div>
+</section>
+
+<style>
+/* ── Hero UI overlay ──────────────────────────────────────────
+   Direct child of section (position:relative via .section-parallax-header).
+   Use height:100vh — NOT inset:0 — so we get viewport height,
+   not the 120% visual-bleed height of .header-visuals.
+   z-index 10 clears all parallax layers (max z-index 5) and the
+   seam cover (z-index 10 on ::before — same level, our div wins
+   because it comes later in the DOM).
+   ──────────────────────────────────────────────────────────── */
+.hero-ui {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.25rem, 3vw, 2.5rem) clamp(1.25rem, 4vw, 3.5rem);
+  box-sizing: border-box;
+}
+
+/* ── Simple fade+rise — nav, subtitle, badge ─────────────────
+   JS adds .hero-animated to #hero-ui after loader.
+   ─────────────────────────────────────────────────────────── */
+.hero-anim {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.hero-animated .hero-anim {
+  animation: heroFadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes heroFadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Word-reveal — heading ────────────────────────────────────
+   JS wraps each word: <span class="w-out"><span class="w-in">word</span></span>
+   .w-out clips overflow; .w-in slides up on trigger.
+   ─────────────────────────────────────────────────────────── */
+.w-out {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* tiny bottom gap so descenders aren't clipped */
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.w-in {
+  display: inline-block;
+  transform: translateY(108%);
+  transition: transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--wd, 0s);
+  /* preserve trailing space */
+  white-space: pre;
+}
+
+.hero-animated .w-in {
+  transform: translateY(0);
+}
+
+/* ── Subtitle char-fade ───────────────────────────────────── */
+.hero-sub .c-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition-delay: var(--cd, 0s);
+  white-space: pre;
+}
+
+.hero-animated .hero-sub .c-char {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Nav ─────────────────────────────────────────────────── */
+.hero-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  pointer-events: auto;
+  flex-shrink: 0;
+}
+
+.hero-logo {
+  width: clamp(26px, 3vw, 40px);
+  height: auto;
+}
+
+.hero-brand {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: clamp(0.65rem, 1vw, 0.85rem);
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  color: rgba(255, 255, 255, 0.92);
+  text-transform: uppercase;
+}
+
+/* ── Center-left content — grows to fill remaining space ─── */
+.hero-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: min(60%, 700px);
+}
+
+.hero-heading {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 0.85rem;
+  padding: 0;
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 4.5vw, 3.75rem);
+  line-height: 1.1;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.hero-line {
+  display: block;
+}
+
+.hero-sub {
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: clamp(0.85rem, 1.3vw, 1.05rem);
+  color: rgba(255, 255, 255, 0.58);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Bottom-right badge ──────────────────────────────────── */
+.hero-badge {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  pointer-events: auto;
+  flex-shrink: 0;
+}
+
+.hero-badge-icon {
+  width: clamp(16px, 1.8vw, 24px);
+  height: auto;
+  color: rgba(255, 255, 255, 0.4);
+  flex-shrink: 0;
+}
+
+.hero-badge-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-family: 'Neue Montreal', sans-serif;
+  font-size: clamp(0.6rem, 0.85vw, 0.75rem);
+  color: rgba(255, 255, 255, 0.5);
+  text-align: right;
+}
+
+/* ── Mobile ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero-content {
+    max-width: 92%;
+    justify-content: flex-end;
+    padding-bottom: clamp(4rem, 12vh, 7rem);
+  }
+
+  .hero-badge {
+    display: none; /* too cramped on small screens */
+  }
+}
+</style>
+
+<script>
+  // ── Word-split: wraps each word in .w-out > .w-in with staggered --wd delay
+  function splitWords(el: HTMLElement, baseDelay: number, wordGap: number) {
+    const text = el.textContent ?? '';
+    const words = text.split(' ');
+    el.textContent = '';
+    words.forEach((word, i) => {
+      const out = document.createElement('span');
+      out.className = 'w-out';
+      const inn = document.createElement('span');
+      inn.className = 'w-in';
+      inn.style.setProperty('--wd', `${baseDelay + i * wordGap}s`);
+      inn.textContent = word + (i < words.length - 1 ? ' ' : '');
+      out.appendChild(inn);
+      el.appendChild(out);
+    });
+  }
+
+  // ── Char-split: wraps each char in .c-char with staggered --cd delay
+  function splitChars(el: HTMLElement, baseDelay: number, charGap: number) {
+    const text = el.textContent ?? '';
+    el.textContent = '';
+    [...text].forEach((ch, i) => {
+      const span = document.createElement('span');
+      span.className = 'c-char';
+      span.style.setProperty('--cd', `${baseDelay + i * charGap}s`);
+      span.textContent = ch;
+      el.appendChild(span);
+    });
+  }
+
+  function setupHeroSplits() {
+    // Line 0: "Find your path and" — words start at 0.3s, 0.07s apart
+    // Line 1: "explore beyond the usual." — words start at 0.52s, 0.07s apart
+    const lines = document.querySelectorAll<HTMLElement>('[data-split-words]');
+    lines.forEach((line) => {
+      const lineIdx = parseInt(line.dataset.lineIndex ?? '0', 10);
+      const base = 0.3 + lineIdx * 0.22;
+      splitWords(line, base, 0.07);
+    });
+
+    // Subtitle chars — start after last heading word finishes (~0.9s)
+    const sub = document.querySelector<HTMLElement>('.hero-sub');
+    if (sub) splitChars(sub, 0.82, 0.028);
+  }
+
+  function triggerHeroAnim() {
+    const ui = document.getElementById('hero-ui');
+    if (ui) ui.classList.add('hero-animated');
+  }
+
+  function initHero() {
+    setupHeroSplits();
+    // 1.5s fallback if loader event never fires
+    const heroTimer = setTimeout(triggerHeroAnim, 1500);
+    document.addEventListener('tratree:loader-done', () => {
+      clearTimeout(heroTimer);
+      triggerHeroAnim();
+    }, { once: true });
+  }
+
+  // Re-initialise after Astro view transitions
+  document.addEventListener('astro:after-swap', () => {
+    const ui = document.getElementById('hero-ui');
+    if (ui) ui.classList.remove('hero-animated');
+    initHero();
+  });
+
+  initHero();
+</script>
